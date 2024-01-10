@@ -1,0 +1,46 @@
+<!-- Save this as split_pdf_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Splitter</title>
+</head>
+<body>
+    <h2>PDF Splitter</h2>
+    
+    <form id="pdfForm" enctype="multipart/form-data">
+        <label for="pdfInput">Select PDF File:</label>
+        <input type="file" id="pdfInput" name="pdf" accept=".pdf" />
+        
+        <br>
+        
+        <label for="customSplit">Custom Split at Page:</label>
+        <input type="number" id="customSplit" name="custom_split" min="1" placeholder="Leave blank for individual pages" />
+        
+        <br>
+        
+        <button type="button" onclick="splitPDF()">Split PDF</button>
+    </form>
+
+    <script>
+        function splitPDF() {
+            const pdfForm = document.getElementById('pdfForm');
+            const formData = new FormData(pdfForm);
+
+            fetch('/split-pdf', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                alert('Error splitting PDF. Please try again.');
+                console.error(error);
+            });
+        }
+    </script>
+</body>
+</html>
